@@ -28,12 +28,17 @@
 	<script type="text/javascript">
 		
 		$(document).ready(function(){
+		  
+		  
+		  function runCloud(){
+		  $("section").empty();
 		  var fill = d3.scale.category20();
 		  
 		  //var dataurl = "http://sandbox.hyperninja.net:8080/wordlist";
 		  
 		  var eventurl = "https://orchestradisplay.firebaseio.com/event.json"
 		  var answersurl = "https://orchestradisplay.firebaseio.com/event/answers.json"
+		  
 		  
 		  $.getJSON(eventurl, function(data){
 		  		var question = data.question.text;
@@ -42,16 +47,20 @@
 		  
 		  
 		  $.getJSON(answersurl, function (data){
+		     
 		      var items = [];
  			  $.each( data, function( key, val ) {
               items.push(val.text);
 			  });
+			  console.log("refetched:" + items)
+
 			  
 			  var realwidth = 960;
 			  var realheight = 600;
 		  
 			  d3.layout.cloud().size([realwidth, realheight])
 				  .words(items.map(function(d) {
+				    console.log("TEST!" + d);
 					return {text: d, size: 10 + Math.random() * 90};
 				  }))
 				  .padding(5)
@@ -60,14 +69,16 @@
 				  .fontSize(function(d) { return d.size; })
 				  .on("end", draw)
 				  .start();
+			 
 			  function draw(words) {
+			    console.log("redrawing");
 				d3.select("section").append("svg")
 					.attr("width", realwidth)
 					.attr("height", realheight)
 				  .append("g")
 					.attr("transform", "translate(480,300)")
 				  .selectAll("text")
-					.data(words)
+					.data(words, function(d){ console.log(d.text);return d.text;})
 				  .enter().append("text")
 					.style("font-size", function(d) { return d.size + "px"; })
 					.style("font-family", "Impact")
@@ -76,11 +87,25 @@
 					.attr("transform", function(d) {
 					  return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
 					})
-					.text(function(d) { return d.text; });
+					.text(function(d) { console.log(d.text); return d.text; });
+					
+// 					d3.select("section").append("svg")
+// 					.attr("width", realwidth)
+// 					.attr("height", realheight)
+// 				  .append("g")
+// 					.attr("transform", "translate(480,300)")
+// 				  .selectAll("text")
+// 					.data(words, function(d){ console.log(d.text);return d.text;})
+// 				  .exit().remove()
+// 					
 			  }
-		  
+
 		  }); //end getJSON 
+		  setTimeout(function() {runCloud()},5000)
 		  
+		  } //end runCloud
+		 
+		  runCloud();
 		 }); //end document.ready
 		 
 
