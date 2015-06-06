@@ -1,16 +1,34 @@
 var React = window.React = require('react');
-
+var Firebase = window.Firebase = require('firebase');
 
 var admin = React.createClass({
+    mixins: [ReactFireMixin],
+
     getInitialState: function() {
-        return {question: '', text: '', changeQuestion:true};
+        return {items: [], question: '' , text: '', changeQuestion:false};
+
+    },
+    componentWillMount: function() {
+        this.firebaseRef = new Firebase("https://orchestradisplay.firebaseio.com/event/");
+        this.bindAsObject(this.firebaseRef, "items");
+
+    },
+    componentDidUpdate: function() {
+        this.setState({question: this.state.items["question"].text});
+    },
+    componentWillUnmount: function() {
+        this.unbind("items");
     },
     onChange: function(e) {
         this.setState({text: e.target.value});
     },
     handleSubmit: function(e) {
         e.preventDefault();
-            this.setState({
+        var questionRef = new Firebase('https://orchestradisplay.firebaseio.com/event/question');
+        questionRef.update({
+            text: this.state.text
+        });
+        this.setState({
                 question: this.state.text,
                 text: '',
                 changeQuestion: false
@@ -28,7 +46,7 @@ var admin = React.createClass({
             return (
                 <div>
                     <h3>Poll question</h3>
-
+                    <br/>Current question: {this.state.question}
                     <form onSubmit={this.handleSubmit}>
                         <textarea rows="2" columns="50" onChange={this.onChange} value={this.state.text}/>
                         <br/>
@@ -40,7 +58,7 @@ var admin = React.createClass({
             return (
                 <div>
                     <h3>Poll question</h3>
-                    <PollQuestion item={this.state.question}/>
+                    <br/>Current question: {this.state.question}
                     <form onSubmit={this.handleReplace}>
                         <button>{'Reset question'}</button>
                     </form>
@@ -51,33 +69,34 @@ var admin = React.createClass({
 });
 
 var response = React.createClass({
+    mixins: [ReactFireMixin],
+
     getInitialState: function() {
-        return {items: [], text: ''};
+        return {items: [], question: '', answer:'', text: ''};
     },
+    componentWillMount: function() {
+        this.firebaseRef = new Firebase("https://orchestradisplay.firebaseio.com/event/");
+        this.bindAsObject(this.firebaseRef, "items");
+
+    },
+    componentDidUpdate: function() {
+        this.setState({question: this.state.items["question"].text});
+    },
+
     onChange: function(e) {
         this.setState({text: e.target.value});
     },
-    onFormSubmit: function(data, callback) {
-        $.ajax({
-            url: this.props.url,
-            dataType: 'json',
-            type: 'POST',
-            data: data,
-            success: callback,
-            error: function(xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)
-        });
-    },
+
     handleSubmit: function(e) {
         e.preventDefault();
-        var nextItems = this.state.items.concat([this.state.text]);
-        var nextText = '';
-        this.setState();
-        this.props.onFormSubmit({
-            url: "/api/submit"
-        }, function(data) {
-            this.setState({items: nextItems, text: nextText});
+        var answersRef = new Firebase('https://orchestradisplay.firebaseio.com/event/answers');
+        answersRef.push({
+            text: this.state.text
+        });
+        this.setState({
+            question: this.state.question,
+            answer: this.state.text,
+            text: ''
         });
     },
     render: function() {
@@ -95,7 +114,6 @@ var response = React.createClass({
 
 var PollQuestion = React.createClass({
     render: function() {
-        alert(this.props.item);
         return <div align="center">{this.props.item}</div>;
     }
 });
