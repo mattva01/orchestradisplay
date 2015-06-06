@@ -29,10 +29,12 @@
 		  var fill = d3.scale.category20();
 		  
 		  var dataurl = "http://sandbox.hyperninja.net:8080/wordlist";
+		  
 		  var wordlist = $.getJSON(dataurl);
+		  alert(wordlist);
 		  
 		  d3.layout.cloud().size([300, 300])
-			  .words(wordlist.map(function(d) {
+			  .words(["test1","test2"].map(function(d) {
 				return {text: d, size: 10 + Math.random() * 90};
 			  }))
 			  .padding(5)
