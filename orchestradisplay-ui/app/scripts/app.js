@@ -51,7 +51,7 @@ var admin = React.createClass({
                     <h3>Poll question</h3>
                     <br/>Current question: {this.state.question}
                     <form onSubmit={this.handleSubmit}>
-                        <textarea rows="2" columns="50" onChange={this.onChange} value={this.state.text}/>
+                        <input size="70" onChange={this.onChange} value={this.state.text}/>
                         <br/>
                         <button>{'Set question'}</button>
                     </form>
@@ -75,7 +75,7 @@ var response = React.createClass({
     mixins: [ReactFireMixin],
 
     getInitialState: function() {
-        return {items: [], question: '', answer:'', text: '', ready:false};
+        return {items: [], question: '', answer:'', text: '', ready:false, answered:false};
     },
     onChange: function(e) {
         this.setState({text: e.target.value});
@@ -104,21 +104,30 @@ var response = React.createClass({
             question: this.state.question,
             text: '',
             answer: this.state.text,
-            changeQuestion: false
+            answered:true
         });
     },
     render: function() {
         if(this.state.ready) {
-            return (
-                <div>
-                    <h3>{this.state.question}</h3>
-                    <form onSubmit={this.handleSubmit}>
-                        <textarea rows="2" columns="50" onChange={this.onChange} value={this.state.text}/>
-                        <br/>
-                        <button>{'Submit'}</button>
-                    </form>
-                </div>
-            );
+            if(this.state.answered) {
+                return (
+                    <div>
+                        <h3>{this.state.question}</h3>
+                        You said: {this.state.answer}
+                    </div>
+                )
+            } else {
+                return (
+                    <div>
+                        <h3>{this.state.question}</h3>
+                        <form onSubmit={this.handleSubmit}>
+                            <input size="30" onChange={this.onChange} value={this.state.text}/>
+                            <br/><br/>
+                            <button>{'Submit'}</button>
+                        </form>
+                    </div>
+                );
+            }
         } else {
             return(<div/>);
         }
