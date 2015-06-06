@@ -11,7 +11,6 @@ var admin = React.createClass({
     componentWillMount: function() {
         this.firebaseRef = new Firebase("https://orchestradisplay.firebaseio.com/event/");
         this.bindAsObject(this.firebaseRef, "items");
-
     },
     componentDidUpdate: function() {
         var self = this;
@@ -33,10 +32,10 @@ var admin = React.createClass({
             text: this.state.text
         });
         this.setState({
-                question: this.state.text,
-                text: '',
-                changeQuestion: false
-            });
+            question: this.state.text,
+            text: '',
+            changeQuestion: false
+        });
     },
     handleReplace: function(e) {
         this.setState({
@@ -106,15 +105,20 @@ var response = React.createClass({
         });
     },
     render: function() {
-        return (
-            <div>
-                <h3>{this.state.question}</h3>
-                <form onSubmit={this.handleSubmit}>
-                    <textarea rows="2" columns="50" onChange={this.onChange} value={this.state.text}/><br/>
-                    <button>{'Submit'}</button>
-                </form>
-            </div>
-        );
+        if(this.state.ready) {
+            return (
+                <div>
+                    <h3>{this.state.question}</h3>
+                    <form onSubmit={this.handleSubmit}>
+                        <textarea rows="2" columns="50" onChange={this.onChange} value={this.state.answer}/>
+                        <br/>
+                        <button>{'Submit'}</button>
+                    </form>
+                </div>
+            );
+        } else {
+            return(<div/>);
+        }
     }
 });
 
