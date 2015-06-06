@@ -36,10 +36,11 @@
 		<!-- wordcloud -->
 		<script type="text/javascript">
 		  var fill = d3.scale.category20();
+		  
+		  var dataurl = "http://sandbox.hyperninja.net:8080/wordlist";
+		  
 		  d3.layout.cloud().size([300, 300])
-			  .words([
-				"Hello", "world", "normally", "you", "want", "more", "words",
-				"than", "this"].map(function(d) {
+			  .words($.getJSON(dataurl).map(function(d) {
 				return {text: d, size: 10 + Math.random() * 90};
 			  }))
 			  .padding(5)
@@ -75,8 +76,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <!-- Bootstrap Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
-    
 
 
 </body>
