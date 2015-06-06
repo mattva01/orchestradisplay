@@ -78,18 +78,21 @@ var response = React.createClass({
         return {items: [], question: '', answer:'', text: '', ready:false};
     },
     onChange: function(e) {
-        this.setState({answer: e.target.value});
+        this.setState({text: e.target.value});
     },
     componentWillMount: function() {
-        this.firebaseRef = new Firebase("https://orchestradisplay.firebaseio.com/event/");
-        this.bindAsObject(this.firebaseRef, "items");
+        this.firebaseRef2 = new Firebase("https://orchestradisplay.firebaseio.com/event/");
+        this.bindAsObject(this.firebaseRef2, "items");
     },
     componentDidUpdate: function() {
-        var self = this;
-        setTimeout(function () {
-            self.setState({question: self.state.items["question"].text});
-        }, 1);
-        this.state.ready = true;
+        if(!this.state.ready) {
+            var self = this;
+            setTimeout(function () {
+                self.setState({question: self.state.items["question"].text});
+            }, 1);
+            this.state.ready = true;
+            console.log(this.state.items);
+        }
     },
     handleSubmit: function(e) {
         e.preventDefault();
@@ -110,7 +113,7 @@ var response = React.createClass({
                 <div>
                     <h3>{this.state.question}</h3>
                     <form onSubmit={this.handleSubmit}>
-                        <textarea rows="2" columns="50" onChange={this.onChange} value={this.state.answer}/>
+                        <textarea rows="2" columns="50" onChange={this.onChange} value={this.state.text}/>
                         <br/>
                         <button>{'Submit'}</button>
                     </form>
