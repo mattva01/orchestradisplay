@@ -30,11 +30,11 @@
 		  
 		  var dataurl = "http://sandbox.hyperninja.net:8080/wordlist";
 		  
-		  var wordlist = $.getJSON(dataurl);
-		  alert(wordlist);
+		  $.getJSON(dataurl, function (data){
 		  
-		  d3.layout.cloud().size([300, 300])
-			  .words(["test1","test2"].map(function(d) {
+		     
+		  d3.layout.cloud().size([1000, 500])
+			  .words(data.map(function(d) {
 				return {text: d, size: 10 + Math.random() * 90};
 			  }))
 			  .padding(5)
@@ -45,8 +45,8 @@
 			  .start();
 		  function draw(words) {
 			d3.select("section").append("svg")
-				.attr("width", 300)
-				.attr("height", 300)
+				.attr("width", 1000)
+				.attr("height", 500)
 			  .append("g")
 				.attr("transform", "translate(150,150)")
 			  .selectAll("text")
@@ -61,7 +61,9 @@
 				})
 				.text(function(d) { return d.text; });
 		  }
+		  });
 		 });
+		 
 
 		</script>
 </head>
