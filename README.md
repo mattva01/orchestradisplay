@@ -1,1 +1,3 @@
-# orchestradisplay
+Orchestra Display is an interactive polling and outreach tool designed for the [Alexandria Symphony Orchestra](http://www.alexsym.org/ "Alexandria Symphony Orchestra") at a [Code for Northern Virginia](http://codefornova.org/ "Code for America - Northern Virginia Brigade") hackathon at the Durant Center in Alexandria, Va., on the National Day of Civic Hacking on June 6, 2015.
+
+Orchestra Display allows patrons to submit responses via their mobile devices to a question or poll posted by event organizers and displays the aggreated responses in a visually appealing or useful way on screens operated by the event host.
