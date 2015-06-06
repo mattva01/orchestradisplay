@@ -33,10 +33,10 @@ var admin = React.createClass({
             text: this.state.text
         });
         this.setState({
-                question: this.state.text,
-                text: '',
-                changeQuestion: false
-            });
+            question: this.state.text,
+            text: '',
+            changeQuestion: false
+        });
     },
     handleReplace: function(e) {
         this.setState({
