@@ -32,8 +32,10 @@
 		  
 		  $.getJSON(dataurl, function (data){
 		  
-		     
-		  d3.layout.cloud().size([1000, 500])
+		  var realwidth = 960;
+		  var realheight = 600;
+		  
+		  d3.layout.cloud().size([realwidth, realheight])
 			  .words(data.map(function(d) {
 				return {text: d, size: 10 + Math.random() * 90};
 			  }))
@@ -45,10 +47,10 @@
 			  .start();
 		  function draw(words) {
 			d3.select("section").append("svg")
-				.attr("width", 1000)
-				.attr("height", 500)
+				.attr("width", realwidth)
+				.attr("height", realheight)
 			  .append("g")
-				.attr("transform", "translate(150,150)")
+				.attr("transform", "translate(430,300)")
 			  .selectAll("text")
 				.data(words)
 			  .enter().append("text")
@@ -68,6 +70,7 @@
 		</script>
 </head>
 <body>
+ 
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12">
@@ -76,11 +79,12 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-xs-12 text-center">
-	    <section class="text-center">
-		<!-- wordcloud -->
+		<div class="col-xs-12">
+	    <!-- wordcloud -->
+		 <section>
 		
-		</section>
+		
+		 </section>
 		</div> <!-- end col -->
 	</div><!-- end row -->
 </div><!-- end container -->
